@@ -7,10 +7,9 @@ import userService from "../services/userService"
 import categoryService from "../services/categoryService"
 
 import filem from "../miehet.txt"
-/*
 import filen from "../naiset.txt"
 import filek from "../kaikki.txt"
-*/
+
 class Session {
   constructor() {
     this.playerId = null;
@@ -111,8 +110,23 @@ async function nameCheck(game) {
     console.log('No name entered');
     return;
   }
+  var response = null;
   try {
-    const response = await fetch(filem);
+    switch (game.catName){
+      case "men":
+        response = await fetch(filem)
+        break;
+      case "women":
+        response = await fetch(filen)
+        break;
+      case "all":
+        response = await fetch(filek)
+        break;
+      default:
+        response = await fetch(filem)
+        break;
+    }
+    
     const data = await response.text();
     const regex = new RegExp(`\\b${name}\\b`, 'i');
     if (regex.test(data) && !game.userNames.includes(name)) {
