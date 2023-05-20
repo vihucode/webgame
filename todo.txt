@@ -1,8 +1,0 @@
-TODO:
-Nappien painettuna pysyminen play.js ainakin
-pelaajan tietojen päivitys pelin jälkeenm ja ennen
-Pelin pysäytys
-pelin loppuminen
-Pisteiden päivitys jos parempi kuin entinen
-Error jos tyhjä käyttäjä
-Peli kirjaston vaihtuminen valinann mukaan
