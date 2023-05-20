@@ -1,0 +1,7 @@
+POST http://localhost:3004/api/categories
+Content-Type: application/json
+
+{
+  "category": "women",
+  "active": true
+} 
