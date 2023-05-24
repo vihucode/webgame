@@ -8,7 +8,7 @@ import categoryService from "../../services/categoryService"
 
 export default function Play() {
   const [username, setUsername] = useState("")
-  const [category, setCategory] = useState("men")
+  const [category, setCategory] = useState("all")
   const [users, setUsers] = useState([])
   const [categories, setCategories] = useState([])
 
@@ -23,39 +23,41 @@ export default function Play() {
     
   }, [])
   const handleLogin = async (event) => {
-    const existingUser = users.find((user) => user.username === username);
-    const existingCategory = categories.find((cat) => cat.category === category);
+    if (username !== ""){
+      const existingUser = users.find((user) => user.username === username);
+      const existingCategory = categories.find((cat) => cat.category === category);
   
-    if (!existingUser) {
-      console.log("creating user with", username);
-      const newUser = {
-        username: username,
-        categories: {
-          men: { score: 0 },
-          women: { score: 0 },
-          all: { score: 0 },
-        },
-        active: true,
-      };
-      await userService.login(newUser);
-    } else {
-      console.log("logging in as", username);
-      await userService.updateActive(existingUser.id, null, category, true);
-
+      if (!existingUser) {
+        console.log("creating user with", username);
+        const newUser = {
+          username: username,
+          categories: {
+            men: { score: 0 },
+            women: { score: 0 },
+            all: { score: 0 },
+          },
+          active: true,
+        };
+        await userService.login(newUser);
+      } else {
+        console.log("logging in as", username);
+        await userService.updateActive(existingUser.id, null, category, true);
+  
+      }
+    
+      await categoryService.updateActive(existingCategory.id, true);
+  
+          // Wait for user and category updates to complete
+      await Promise.all([
+        userService.get(username)
+      ]);
+    
+      // Move to the game window
+      // Replace the "/game" path with your desired route
+      window.location.href = "/game";
+    
+      setUsername("");
     }
-  
-    await categoryService.updateActive(existingCategory.id, true);
-
-        // Wait for user and category updates to complete
-    await Promise.all([
-      userService.get(username)
-    ]);
-  
-    // Move to the game window
-    // Replace the "/game" path with your desired route
-    window.location.href = "/game";
-  
-    setUsername("");
   };
 
   const handleKeyDown = (event) => {
@@ -71,7 +73,7 @@ export default function Play() {
           GIVE USERNAME:
         </h1>
         <h2 className="cats" id="text">
-          CATEGORY
+          NAME CATEGORY
         </h2>
         <div className="button-container">
           <button
@@ -89,7 +91,7 @@ export default function Play() {
             <div className="bg">
               <div className="bg-inner"></div>
             </div>
-            <div className="text">MEN</div>
+            <div className="text">MALE</div>
           </button>
           <button
             onClick={() => setCategory("women")}
@@ -106,7 +108,7 @@ export default function Play() {
             <div className="bg">
               <div className="bg-inner"></div>
             </div>
-            <div className="text">WOMEN</div>
+            <div className="text">FEMALE</div>
           </button>
           <button
             onClick={() => setCategory("all")}

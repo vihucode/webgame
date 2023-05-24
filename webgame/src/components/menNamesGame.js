@@ -14,11 +14,12 @@ class Session {
   constructor() {
     this.playerId = null;
     this.name = "";
-    this.timer = 5000;
+    this.timer = 8000;
     this.run = true;
     this.points = 0;
     this.targetTime = 0;
-    this.userNames = [];
+    this.usetNames = []
+    this.nameData = null
 
     this.initialize();
   }
@@ -31,6 +32,27 @@ class Session {
     const [catName, catId] = await getActiveCategory();
     this.catName = catName;
     this.catId = catId;
+
+    var response = null;
+    switch (catName){
+      case "men":
+        document.getElementById('text').innerText = "MALE NAMES";
+        response = await fetch(filem)
+        break;
+      case "women":
+        document.getElementById('text').innerText = "FEMALE NAMES";
+        response = await fetch(filen)
+        break;
+      case "all":
+        document.getElementById('text').innerText = "ALL NAMES";
+        response = await fetch(filek)
+        break;
+      default:
+        response = await fetch(filem)
+        break;
+    }
+    
+    this.nameData = await response.text();
   }
 }
 
@@ -77,6 +99,7 @@ function runTimer(game) {
 
   // Update the countdown timer every second
   var interval = setInterval(function() {
+    console.log("running...")
     // Calculate the remaining time
     var now = new Date().getTime();
     game.timer = game.targetTime - now;
@@ -86,22 +109,35 @@ function runTimer(game) {
 
     // Add leading zero if necessary
     if (seconds < 10) seconds = '0' + seconds;
-
-    // Update the timer display
-    document.getElementById('timer').innerHTML = minutes + ':' + seconds;
-    document.getElementById('points').innerHTML = game.points;
-
-    // Stop the countdown when time is up
+    // Stop the countdown when time is up or when stopGame is true
     if (game.timer <= 0) {
-      document.getElementById('timer').innerHTML = '0:00'
-      document.getElementById('user').disabled = true
-      userService.updateActive(game.playerId, game.points, game.catName, false )
-      categoryService.updateActive(game.catId, false )
+      console.log('here')
+      clearInterval(interval); // Clear the interval when the game is stopped
       game.run = false;
-      clearInterval(interval);
+      if (document.getElementById('user')){
+        document.getElementById('user').disabled = true;
+      }
+      userService.updateActive(game.playerId, game.points, game.catName, false);
+      categoryService.updateActive(game.catId, false);
+      return;
+    }
+
+    // Update the timer display if the element exists and is accessible
+    var timerElement = document.getElementById('timer');
+    if (timerElement) {
+      timerElement.innerHTML = minutes + ':' + seconds;
+    }
+
+    // Update the points display if the element exists and is accessible
+    var pointsElement = document.getElementById('points');
+    if (pointsElement) {
+      pointsElement.innerHTML = game.points;
     }
   }, 1000);
+  
 }
+
+
 
 
 async function nameCheck(game) {
@@ -110,29 +146,15 @@ async function nameCheck(game) {
     console.log('No name entered');
     return;
   }
-  var response = null;
+
   try {
-    switch (game.catName){
-      case "men":
-        response = await fetch(filem)
-        break;
-      case "women":
-        response = await fetch(filen)
-        break;
-      case "all":
-        response = await fetch(filek)
-        break;
-      default:
-        response = await fetch(filem)
-        break;
-    }
-    
-    const data = await response.text();
     const regex = new RegExp(`\\b${name}\\b`, 'i');
-    if (regex.test(data) && !game.userNames.includes(name)) {
+    if (regex.test(game.nameData) && !game.usetNames.includes(name)) {
       game.points += 50;
-      game.timer += 3000;
-      game.userNames.push(name);
+      if (game.usetNames.length !== 0){
+        game.timer += 3000;
+      }
+      game.usetNames.push(name);
       console.log(`${name} exists in the file`);
       game.targetTime = new Date().getTime() + game.timer;
     } else {
@@ -144,9 +166,6 @@ async function nameCheck(game) {
 
   document.getElementById('user').value = '';
 }
-
-
-
 
 export {nameCheck, runTimer, Session};
 
