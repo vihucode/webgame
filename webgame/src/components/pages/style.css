@@ -62,9 +62,25 @@ ul {
   position: relative;
   top: 10%;
   left: 30%;
-
 }
 
+.category-dropdown{
+  position: absolute;
+  font-size: 30;
+  top: 60%;
+  left: 32%;
+}
+
+.label-style {
+  font-size: 22px; /* Adjust the font size as needed */
+}
+
+.dropdown-select {
+  width: 80px; /* Adjust the width as needed */
+  height: 30px; /* Adjust the height as needed */
+  font-size: 18px; /* Adjust the font size as needed */
+  text-align: center;
+}
 
 .leaderboard{
   font-size: 25px;
@@ -146,6 +162,7 @@ ul {
   border-radius: 0px;
   border-color: rgb(0, 0, 0);
 }
+
 #name{
   margin: 0;
   position: absolute;
@@ -155,11 +172,11 @@ ul {
   -ms-transform: translate(-50%, -50%);
   transform: translate(-50%, -50%);
 }
-#button-posi{
-  margin: 0;
+
+#playAgain{
   position: absolute;
-  top: 0%;
-  opacity: 0;
+  top: 65%;
+  opacity: 100;
   left: 48.5%;
   -ms-transform: translate(-50%, -50%);
   transform: translate(-50%, -50%);
@@ -283,3 +300,13 @@ ul {
  .cube:hover .bg-top {
   background: #28282d;
  }
+
+ #button-posi{
+  margin: 0;
+  position: absolute;
+  top: 0%;
+  opacity: 100;
+  left: 48.5%;
+  -ms-transform: translate(-50%, -50%);
+  transform: translate(-50%, -50%);
+}
