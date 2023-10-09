@@ -21,11 +21,7 @@ export default function Home() {
               <Button name={"PLAY"} />
             </Link>
           </li>
-          <li>
-            <Link to="/settings">
-              <Button name={"SETTINGS"} />
-            </Link>
-          </li>
+
           <li>
             <Link to="/leaderboard">
               <Button name={"LEADERBOARD"} />

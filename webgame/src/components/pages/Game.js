@@ -32,8 +32,9 @@ export default function Game() {
 
   const playClickSound = () => {
     const audio = new Audio(gameSound);
+    audio.loop = true;
     audio.play();
-  };
+  };  
 
   const handleKeyPress = (event) => {
     if (event.key === "Enter") {
