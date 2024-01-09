@@ -4,3 +4,5 @@ The game idea is to write as many words as possible from a given category before
 Currently, the only category is Finnish names.
 
 This is my first own website project with React after I completed the FullStack Open course by the University of Helsinki.
+
+Still a work in progress.
